@@ -19,6 +19,7 @@ check_multiboot:
 	@grub-file --is-x86-multiboot ./isodir/boot/kfs.bin && echo "multiboot check \033[32;1mOK\033[0m" || echo "multiboot check \033[31;1mFAILED\033[0m"
 
 boot:
+	mkdir build 2>/dev/null || true
 	nasm -felf32 $(BOOTDIR)/boot.s -o $(BUILDDIR)/boot.o
 
 kernel:
