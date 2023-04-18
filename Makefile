@@ -25,6 +25,9 @@ boot:
 kernel:
 	i686-elf-gcc -c $(KERNELDIR)/kernel.c -o $(BUILDDIR)/kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
+run: $(NAME)
+	qemu-system-i386 -cdrom kfs.iso
+
 clean:
 	rm -rf build
 
