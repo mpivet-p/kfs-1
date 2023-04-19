@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
- 
+
 #define VGA_WIDTH 80
 #define VGA_HEIGHT 25
 /* Hardware text mode color constants. */
@@ -23,6 +23,19 @@ enum vga_color {
 	VGA_COLOR_LIGHT_BROWN = 14,
 	VGA_COLOR_WHITE = 15,
 };
+
+static inline void	outb(uint16_t port, uint8_t val)
+{
+	asm volatile("outb %0, %1" : : "a"(val), "Nd"(port));
+}
+
+static inline uint8_t inb(uint16_t port)
+{
+	uint8_t retval;
+
+	asm volatile("inb %1, %0" : "=a"(retval) : "Nd"(port));
+	return (retval);
+}
 
 static inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg) 
 {
@@ -47,6 +60,25 @@ size_t terminal_column;
 uint8_t terminal_color;
 uint16_t* terminal_buffer;
 
+static inline void	enable_cursor(uint8_t start, uint8_t end)
+{
+	outb(0x3D4, 0x0A);
+	outb(0x3D5, (inb(0x3D5) & 0xC0) | start);
+ 
+	outb(0x3D4, 0x0B);
+	outb(0x3D5, (inb(0x3D5) & 0xE0) | end);
+}
+
+static void update_cursor(int8_t x, int8_t y)
+{
+	int16_t pos = y * VGA_WIDTH + x;
+
+	outb(0x3D4, 0x0F);
+	outb(0x3D5, (uint8_t)(pos & 0xFF));
+	outb(0x3D4, 0x0E);
+	outb(0x3D5, (uint8_t)((pos >> 8) & 0xFF));
+}
+
 void init_term(void) 
 {
 	terminal_row = 0;
@@ -59,6 +91,7 @@ void init_term(void)
 			terminal_buffer[index] = vga_entry(' ', terminal_color);
 		}
 	}
+	enable_cursor(0, VGA_WIDTH - 1);
 }
 
 void terminal_setcolor(uint8_t color) 
@@ -101,6 +134,7 @@ void term_write(const char* data, size_t size)
 void print(const char* data) 
 {
 	term_write(data, strlen(data));
+	update_cursor(terminal_column, terminal_row);
 }
  
 void kernel_main(void) 
