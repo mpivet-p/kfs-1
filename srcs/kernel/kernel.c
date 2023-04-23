@@ -19,5 +19,5 @@ void kernel_main(void)
 	install_gdt();
 	init_term();
 
-	print("Hello 42!\nby mpivet-p");
+	print("Hello 42!\nby mpivet-p\n");
 }
