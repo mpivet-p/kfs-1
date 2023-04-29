@@ -9,7 +9,7 @@ BOOTL_FILES=boot.s gdt_flush.s
 BOOTL_SRCS=$(addprefix $(SRC_DIR), $(addprefix $(BOOTL_DIR), $(BOOTL_FILES)))
 
 KERNEL_DIR=kernel/
-KERNEL_FILES=kernel.c string.c term.c init_term.c gdt.c
+KERNEL_FILES=kernel.c string.c term.c init_term.c gdt.c printk.c
 KERNEL_SRCS=$(addprefix $(SRC_DIR), $(addprefix $(KERNEL_DIR), $(KERNEL_FILES)))
 
 SRCS=$(KERNEL_FILES) $(BOOTL_FILES)

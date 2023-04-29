@@ -1,12 +1,9 @@
-#include <stdbool.h>
-#include <stddef.h>
 #include <stdint.h>
 #include "string.h"
-#include "vga.h"
-#include "io.h"
 #include "cursor.h"
 #include "term.h"
 #include "gdt.h"
+#include "printk.h"
 
 void print(const char* data)
 {
@@ -19,5 +16,6 @@ void kernel_main(void)
 	install_gdt();
 	init_term();
 
-	print("Hello 42!\nby mpivet-p\n");
+	print("Hello 42!\nby mpivet-p");
+	printk("\nTEST %s", 42);
 }
