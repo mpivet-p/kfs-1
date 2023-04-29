@@ -13,9 +13,13 @@ void print(const char* data)
 
 void kernel_main(void)
 {
+	int var;
+	int varb;
 	install_gdt();
 	init_term();
 
 	print("Hello 42!\nby mpivet-p");
-	printk("\nTEST %s", 42);
+	printk("\nTEST %d\n", 42);
+	printk("var %p", &var);
+	printk("var %p", &varb);
 }

@@ -27,36 +27,32 @@ static	int	get_flag(char c)
 	return (ret);
 }
 
-static void	get_str(va_list *ap, char *buff)
+static void	get_str(va_list *ap, char *loc_buff)
 {
 	char *n = va_arg(*ap, char*);
 	(void)n;
-	buff[0] = 'S';
-	buff[1] = 'T';
+	loc_buff[0] = 'S';
+	loc_buff[1] = 'T';
 }
 
-static void	get_ptr(va_list *ap, char *buff)
+static void	get_ptr(va_list *ap, char *loc_buff)
 {
-	void	*n = va_arg(*ap, void*);
-	(void)n;
-	buff[0] = 'P';
-	buff[1] = 'T';
+	uint32_t	n = va_arg(*ap, void*);
+	loc_buff[0] = '0';
+	loc_buff[1] = 'x';
+	itoa_base_buf(n, 16, loc_buff + 2);
 }
 
-static void	get_int(va_list *ap, char *buff)
+static void	get_int(va_list *ap, char *loc_buff)
 {
 	int		n = va_arg(*ap, int);
-	(void)n;
-	buff[0] = '4';
-	buff[1] = '2';
+	itoa_buf(n, loc_buff);
 }
 
-static void	get_hex(va_list *ap, char *buff)
+static void	get_hex(va_list *ap, char *loc_buff)
 {
 	uint64_t	n = va_arg(*ap, uint64_t);
-	(void)n;
-	buff[0] = 'H';
-	buff[1] = 'X';
+	itoa_base_buf(n, 16, loc_buff);
 }
 
 static void	flush_printk_buff(char *buff, size_t *j)
@@ -68,7 +64,7 @@ static void	flush_printk_buff(char *buff, size_t *j)
 
 static void	process_flag(va_list *ap, int flag, char *buff, size_t *j)
 {
-	static void (*fl[PRINTK_FLAGS_LEN])(va_list *ap, char *buff) = {0x0, get_str,
+	static void (*fl[PRINTK_FLAGS_LEN])(va_list *ap, char *loc_buff) = {0x0, get_str,
 		get_ptr, get_int, get_hex};
 	size_t	len;
 	char	loc_buff[32];
@@ -80,7 +76,7 @@ static void	process_flag(va_list *ap, int flag, char *buff, size_t *j)
 	{
 		flush_printk_buff(buff, j);
 	}
-	//strcat(buff + 1, loc_buff);
+	strcat(buff + 1, loc_buff);
 	*j += len;
 }
 
