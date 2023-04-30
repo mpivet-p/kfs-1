@@ -85,7 +85,7 @@ char *itoa_base_buf(uint32_t nbr, int base, char *buf)
 
 	while (length * base < nbr)
 		length *= base;
-	if (base == nbr)
+	if ((uint32_t)base == nbr)
 		length *= base;
 	while (length > 0)
 	{
