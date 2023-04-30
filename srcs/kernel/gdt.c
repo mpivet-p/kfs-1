@@ -26,17 +26,13 @@ void	install_gdt(void)
 
 	//Null Descriptor
 	init_gdt_entry(&(gdt_e[0]), 0, 0, 0, 0);
-	//Kernel Code
+	//Kernel Code - Data - Stack
 	init_gdt_entry(&(gdt_e[1]), 0, 0xFFFFF, GDT_KERN_ACCESS | GDT_SEG_CODE, GDT_FLAGS);
-	//Kernel Data
 	init_gdt_entry(&(gdt_e[2]), 0, 0xFFFFF, GDT_KERN_ACCESS | GDT_SEG_DATA, GDT_FLAGS);
-	//Kernel Stack
 	init_gdt_entry(&(gdt_e[3]), 0, 0xFFFFF, GDT_KERN_ACCESS | GDT_SEG_STACK, GDT_FLAGS);
-	//User Code
+	//User Code - Data - Stack
 	init_gdt_entry(&(gdt_e[4]), 0, 0xFFFFF, GDT_USER_ACCESS | GDT_SEG_CODE, GDT_FLAGS);
-	//User Data
 	init_gdt_entry(&(gdt_e[5]), 0, 0xFFFFF, GDT_USER_ACCESS | GDT_SEG_DATA, GDT_FLAGS);
-	//User Stack
 	init_gdt_entry(&(gdt_e[6]), 0, 0xFFFFF, GDT_USER_ACCESS | GDT_SEG_STACK, GDT_FLAGS);
 
 	memcpy((void*)GDT_BASE, gdt_e, sizeof(gdt_entry) * GDT_SIZE);
