@@ -20,6 +20,11 @@ void kernel_main(void)
 
 	print("Hello 42!\nby mpivet-p");
 	printk("\nTEST %d\n", 42);
-	printk("var %p", &var);
-	printk("var %p", &varb);
+	printk("var %p\n", &var);
+	printk("var %p\n", &varb);
+	printk("var %%%s\n", "FOO");
+	printk("var %b\n", 0);
+	printk("var %b\n", 1);
+	printk("var %b\n", 2);
+	printk("var %b\n", 3);
 }

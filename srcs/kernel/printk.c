@@ -23,6 +23,9 @@ static	int	get_flag(char c)
 		case 'x':
 			ret = PRINTK_HEX;
 			break ;
+		case 'b':
+			ret = PRINTK_BIN;
+			break ;
 	}
 	return (ret);
 }
@@ -30,14 +33,12 @@ static	int	get_flag(char c)
 static void	get_str(va_list *ap, char *loc_buff)
 {
 	char *n = va_arg(*ap, char*);
-	(void)n;
-	loc_buff[0] = 'S';
-	loc_buff[1] = 'T';
+	strcpy(loc_buff, n);
 }
 
 static void	get_ptr(va_list *ap, char *loc_buff)
 {
-	uint32_t	n = va_arg(*ap, void*);
+	uint32_t	n = va_arg(*ap, uint32_t);
 	loc_buff[0] = '0';
 	loc_buff[1] = 'x';
 	itoa_base_buf(n, 16, loc_buff + 2);
@@ -55,6 +56,12 @@ static void	get_hex(va_list *ap, char *loc_buff)
 	itoa_base_buf(n, 16, loc_buff);
 }
 
+static void	get_bin(va_list *ap, char *loc_buff)
+{
+	uint32_t	n = va_arg(*ap, uint32_t);
+	itoa_base_buf(n, 2, loc_buff);
+}
+
 static void	flush_printk_buff(char *buff, size_t *j)
 {
 	term_write(buff, *j);
@@ -65,18 +72,18 @@ static void	flush_printk_buff(char *buff, size_t *j)
 static void	process_flag(va_list *ap, int flag, char *buff, size_t *j)
 {
 	static void (*fl[PRINTK_FLAGS_LEN])(va_list *ap, char *loc_buff) = {0x0, get_str,
-		get_ptr, get_int, get_hex};
+			get_ptr, get_int, get_hex, get_bin};
 	size_t	len;
-	char	loc_buff[32];
+	char	loc_buff[128];
 
-	bzero(loc_buff, 32);
+	bzero(loc_buff, 128);
 	fl[flag](ap, loc_buff);
 	len = strlen(loc_buff);
 	if (*j + len > PRINTK_BUFF_LEN)
 	{
 		flush_printk_buff(buff, j);
 	}
-	strcat(buff + 1, loc_buff);
+	strcat(buff, loc_buff);
 	*j += len;
 }
 
@@ -88,26 +95,31 @@ int		printk(const char *restrict format, ...)
 	char	buff[PRINTK_BUFF_LEN];
 	int		flag;
 
+	bzero(buff, PRINTK_BUFF_LEN);
 	va_start(ap, format);
 	for (size_t i = 0; i < len; i++)
 	{
 		if (format[i] == '%' && i + 1 < len)
 		{
-			if ((flag = get_flag(format[i + 1])))
+			if ((flag = get_flag(format[i + 1])) != 0)
 			{
 				process_flag(&ap, flag, buff, &j);
 			}
 			else if (format[i + 1] == '%')
-				buff[j++] = '%';
+			{
+				buff[j] = '%';
+				j++;
+			}
 			i++;
 		}
 		else
 		{
 			buff[j] = format[i];
 			j++;
-			buff[j] = 0;
 		}
-		//Need to add a check for j < PRINTK_BUFF_LEN
+
+		if (j == PRINTK_BUFF_LEN && i + 1 < len)
+			flush_printk_buff(buff, &j);
 	}
 	va_end(ap);
 	flush_printk_buff(buff, &j);

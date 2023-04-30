@@ -75,6 +75,7 @@ char *itoa_buf(int nbr, char *buf)
 		i++;
 	}
 	buf[i] = 0;
+	return (buf);
 }
 
 char *itoa_base_buf(uint32_t nbr, int base, char *buf)
@@ -84,6 +85,8 @@ char *itoa_base_buf(uint32_t nbr, int base, char *buf)
 
 	while (length * base < nbr)
 		length *= base;
+	if (base == nbr)
+		length *= base;
 	while (length > 0)
 	{
 		buf[i] = "0123456789abcdef"[nbr / length];
@@ -92,4 +95,5 @@ char *itoa_base_buf(uint32_t nbr, int base, char *buf)
 		i++;
 	}
 	buf[i] = 0;
+	return (buf);
 }
