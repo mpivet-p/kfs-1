@@ -62,7 +62,11 @@ isr_common_stub:
 	push 	fs
 	push 	gs
 	mov		ax, 0x10
-	mov		eax, esp
+	mov		ds, ax
+	mov		es, ax
+	mov		fs, ax
+	mov		gs, ax
+	mov		eax, esp				; Push the stack
 	push	eax
 	mov		eax, exception_handler
 	call	eax

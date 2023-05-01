@@ -20,8 +20,7 @@ typedef struct
 
 
 void		install_idt(void);
-extern void	load_idt(void);
-//void	exception_handler(void);
-
+void		set_idt_descriptor(uint8_t vector, void *isr, uint8_t flags);
+//extern void	load_idt(void);
 
 #endif
