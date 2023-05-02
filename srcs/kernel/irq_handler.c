@@ -8,7 +8,6 @@ void	irq_handler(regs_t *re)
 {
 	void	(*handler)(regs_t *re);
 
-	puts("INT\n");
 	handler = irq_routines[re->int_no - IRQ_VECTOR_OFFSET];
 	if (handler)
 	{

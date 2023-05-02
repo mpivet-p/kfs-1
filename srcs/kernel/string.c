@@ -65,7 +65,7 @@ char *itoa_buf(int nbr, char *buf)
 		buf[i] = '-';
 		i++;
 	}
-	while (length * 10 < rem)
+	while (length * 10 <= rem)
 		length *= 10;
 	while (length > 0)
 	{
@@ -83,9 +83,7 @@ char *itoa_base_buf(uint32_t nbr, int base, char *buf)
 	uint64_t	length = 1;
 	size_t		i = 0;
 
-	while (length * base < nbr)
-		length *= base;
-	if ((uint32_t)base == nbr)
+	while (length * base <= nbr)
 		length *= base;
 	while (length > 0)
 	{

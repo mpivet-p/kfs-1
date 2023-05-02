@@ -6,6 +6,7 @@
 
 extern void		*irq_stub_table[];
 void			timer_handler(regs_t *re);
+void			keyboard_handler(regs_t *re);
 
 void	*irq_routines[16] =
 {
@@ -54,5 +55,6 @@ void	install_irq(void)
 		set_idt_descriptor(IRQ_VECTOR_OFFSET + i, irq_stub_table[i], 0x8E);
 	}
 	install_irq_handler(0, timer_handler);
+	install_irq_handler(1, keyboard_handler);
 }
 

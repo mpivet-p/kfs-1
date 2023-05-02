@@ -9,7 +9,7 @@ BOOTL_FILES=boot.s gdt_flush.s idt_exceptions.s load_idt.s irqs.s
 BOOTL_SRCS=$(addprefix $(SRC_DIR), $(addprefix $(BOOTL_DIR), $(BOOTL_FILES)))
 
 KERNEL_DIR=kernel/
-KERNEL_FILES=kernel.c string.c term.c init_term.c gdt.c printk.c idt.c exception_handler.c puts.c irq_handler.c install_irq.c system_timer.c
+KERNEL_FILES=kernel.c string.c term.c init_term.c gdt.c printk.c idt.c exception_handler.c puts.c irq_handler.c install_irq.c system_timer.c keyboard.c
 KERNEL_SRCS=$(addprefix $(SRC_DIR), $(addprefix $(KERNEL_DIR), $(KERNEL_FILES)))
 
 SRCS=$(KERNEL_FILES) $(BOOTL_FILES)
