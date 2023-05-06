@@ -17,6 +17,9 @@ static	int	get_flag(char c)
 		case 'p':
 			ret = PRINTK_PTR;
 			break ;
+		case 'c':
+			ret = PRINTK_CHR;
+			break ;
 		case 'd':
 			ret = PRINTK_INT;
 			break ;
@@ -42,6 +45,13 @@ static void	get_ptr(va_list *ap, char *loc_buff)
 	loc_buff[0] = '0';
 	loc_buff[1] = 'x';
 	itoa_base_buf(n, 16, loc_buff + 2);
+}
+
+static void	get_char(va_list *ap, char *loc_buff)
+{
+	int		c = va_arg(*ap, int);
+	loc_buff[0] = (char)c;
+	loc_buff[1] =  0;
 }
 
 static void	get_int(va_list *ap, char *loc_buff)
@@ -72,7 +82,7 @@ static void	flush_printk_buff(char *buff, size_t *j)
 static void	process_flag(va_list *ap, int flag, char *buff, size_t *j)
 {
 	static void (*fl[PRINTK_FLAGS_LEN])(va_list *ap, char *loc_buff) = {0x0, get_str,
-			get_ptr, get_int, get_hex, get_bin};
+			get_ptr, get_char, get_int, get_hex, get_bin};
 	size_t	len;
 	char	loc_buff[128];
 

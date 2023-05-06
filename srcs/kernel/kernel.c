@@ -22,8 +22,6 @@ void kernel_main(void)
 
 	init_term();
 
-	//outb(0x64, 0xF2);
-	//printk("0x%x\n", inb(0x60));
 	printk("Hello 42!\nby mpivet-p\n");
 	sleep(2);
 	printk("Done!\n");
