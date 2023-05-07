@@ -95,3 +95,14 @@ char *itoa_base_buf(uint32_t nbr, int base, char *buf)
 	buf[i] = 0;
 	return (buf);
 }
+
+int		strcmp(const char *s1, const char *s2)
+{
+	size_t	i = 0;
+
+	while (s1[i] != 0 && s1[i] == s2[i])
+	{
+		i++;
+	}
+	return ((int)(s1[i] - s2[i]));
+}

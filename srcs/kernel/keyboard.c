@@ -74,20 +74,4 @@ void	keyboard_handler(regs_t *re)
 	}
 }
 
-int		readline(char *buf, size_t size)
-{
-	size_t	i = 0;
-	while (i < size)
-	{
-		if (in_read == 1 && read_key != 0)
-		{
-			in_read = 0;
-			if (read_key == '\n')
-				return (i);
-			buf[i] = read_key;
-			printk("%c", read_key);
-			i++;
-			buf[i] = 0;
-		}
-	}
-}
+

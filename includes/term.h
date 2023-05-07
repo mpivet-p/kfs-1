@@ -13,6 +13,7 @@ extern uint16_t* terminal_buffer;
 void	init_term(void);
 void	term_write(const char* data, size_t size);
 void	puts(const char* data);
+void	terminal_putentryat(char c, uint8_t color, size_t x, size_t y);
 
 static inline void terminal_setcolor(uint8_t color)
 {

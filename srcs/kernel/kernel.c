@@ -7,11 +7,10 @@
 #include "irq.h"
 #include "printk.h"
 
-#define TERM_BUFF	255
+void	shell(void);
 
 void kernel_main(void)
 {
-	char	buf[TERM_BUFF + 1];
 	install_gdt();
 	install_idt();
 	install_irq();
@@ -20,8 +19,5 @@ void kernel_main(void)
 	init_term();
 
 	printk("Hello 42!\nby mpivet-p\n");
-	while (1)
-	{
-		printk("%d\n", readline(&buf, TERM_BUFF));
-	}
+	shell();
 }
