@@ -1,5 +1,6 @@
 #include "printk.h"
 #include "stddef.h"
+#include "term.h"
 #include "io.h"
 
 #define IS_KEY_RELEASE(x)		x & 0x80
@@ -57,25 +58,36 @@ void	keyboard_handler(regs_t *re)
 		if (modifier == 0 && is_modifier(scancode))
 			modifier = scancode;
 		else if (modifier == 0 && scancode <= 58)
-			printk("{ %c }  pressed\n", keys[scancode]);
-		else if (modifier == KEYMOD_SHFT && scancode <= 58)
-			printk("{ %c }  pressed\n", shift_keys[scancode]);
-		else
 		{
-			printk("[%d] Key pressed: %d\n", modifier, scancode);
+			read_key = keys[scancode];
+			in_read = 1;
 		}
+		else if (modifier == KEYMOD_SHFT && scancode <= 58)
+		{
+			read_key = shift_keys[scancode];
+			in_read = 1;
+		}
+//		else
+//		{
+//			printk("[%d] Key pressed: %d\n", modifier, scancode);
+//		}
 	}
 }
 
-//int		readline(char *buf, size_t size)
-//{
-//	size_t	i = 0;
-//	(void)size;
-//	while (1)
-//	{
-//		if (in_read == 1)
-//		{
-//			if (
-//		}
-//	}
-//}
+int		readline(char *buf, size_t size)
+{
+	size_t	i = 0;
+	while (i < size)
+	{
+		if (in_read == 1 && read_key != 0)
+		{
+			in_read = 0;
+			if (read_key == '\n')
+				return (i);
+			buf[i] = read_key;
+			printk("%c", read_key);
+			i++;
+			buf[i] = 0;
+		}
+	}
+}

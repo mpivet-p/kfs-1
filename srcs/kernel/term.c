@@ -31,6 +31,14 @@ static void	term_putchar(char c)
 		terminal_row++;
 		terminal_column = 0;
 	}
+	else if (c == '\t')
+	{
+		for (size_t i = 0; (terminal_column % 4 != 0 && (VGA_WIDTH - terminal_column) > 1) || i == 0; i++)
+		{
+			terminal_putentryat(' ', terminal_color, terminal_column, terminal_row);
+			terminal_column++;
+		}
+	}
 	else
 	{
 		terminal_putentryat(c, terminal_color, terminal_column, terminal_row);

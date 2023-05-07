@@ -8,10 +8,6 @@ void	timer_handler(regs_t *re)
 {
 	timer_ticks++;
 	(void)re;
-	if (timer_ticks % 180 == 0)
-	{
-		printk("%ds Elapsed since startup\n", timer_ticks / 18);
-	}
 }
 
 uint32_t	sleep(uint32_t seconds)
