@@ -1,12 +1,13 @@
 #include <stddef.h>
 #include <stdint.h>
-#include "term.h"
 #include "cursor.h"
+#include "printk.h"
+#include "term.h"
 
 extern volatile uint8_t	in_read;
 extern volatile char	read_key;
 
-static void	backspace(char *buf, size_t *i)
+static void	backspace(size_t *i)
 {
 	if (*i > 0)
 	{
@@ -18,10 +19,6 @@ static void	backspace(char *buf, size_t *i)
 		}
 		else
 		{
-			//if (buf[*i] == '\t')
-			//{
-			//	terminal_column -= terminal_column % 4;
-			//}
 			terminal_column -= 1;
 		}
 		update_cursor(terminal_column, terminal_row);
@@ -41,7 +38,11 @@ int		readline(char *buf, size_t size)
 				return (i);
 			if (read_key == '\b')
 			{
-				backspace(buf, &i);
+				backspace(&i);
+			}
+			else if (read_key == '\t')
+			{
+				;
 			}
 			else
 			{
@@ -52,4 +53,5 @@ int		readline(char *buf, size_t size)
 			buf[i] = 0;
 		}
 	}
+	return (i);
 }

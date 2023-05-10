@@ -15,4 +15,5 @@ uint32_t	sleep(uint32_t seconds)
 	uint64_t	time_target = (uint64_t)timer_ticks + (uint64_t)seconds * 18;
 
 	while (timer_ticks < time_target);
+	return (0);
 }

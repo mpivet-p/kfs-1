@@ -36,7 +36,7 @@ $(BUILD_DIR)%.o: $(SRC_DIR)/$(KERNEL_DIR)%.c
 	i686-elf-gcc -c $< -o $@ -std=gnu99 -ffreestanding -O2 -Wall -Wextra -I $(INCLUDE_DIR)
 
 run: all
-	qemu-system-i386 -cdrom kfs.iso
+	qemu-system-i386 -boot d -cdrom kfs.iso
 
 clean:
 	rm -rf $(BUILD_DIR)

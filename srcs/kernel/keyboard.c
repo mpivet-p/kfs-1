@@ -18,7 +18,7 @@ volatile char		read_key = 0;
 
 static uint8_t	is_modifier(uint8_t scancode)
 {
-	static modifiers[KEYMOD_SIZE] = {KEYMOD_ALT, KEYMOD_CTRL, KEYMOD_SHFT};
+	static uint8_t modifiers[KEYMOD_SIZE] = {KEYMOD_ALT, KEYMOD_CTRL, KEYMOD_SHFT};
 
 	for (size_t i = 0; i  < KEYMOD_SIZE; i++)
 	{

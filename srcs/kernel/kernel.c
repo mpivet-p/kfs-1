@@ -7,6 +7,7 @@
 #include "irq.h"
 #include "printk.h"
 
+//#pragma GCC optimize ("O0")
 void	shell(void);
 
 void kernel_main(void)
@@ -19,5 +20,6 @@ void kernel_main(void)
 	init_term();
 
 	printk("Hello 42!\nby mpivet-p\n");
+	sleep(4);
 	shell();
 }
