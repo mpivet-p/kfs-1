@@ -8,7 +8,8 @@
 #include "printk.h"
 
 //#pragma GCC optimize ("O0")
-void	shell(void);
+uint32_t	sleep(uint32_t seconds);
+void		shell(void);
 
 void kernel_main(void)
 {
