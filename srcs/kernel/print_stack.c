@@ -1,3 +1,6 @@
+#include <stdint.h>
+#include "printk.h"
+
 void	print_stack(void)
 {
 	int b = 0x42424242;
@@ -11,7 +14,9 @@ void	print_stack(void)
 	{
 		eip = ebp + 1;
 		printk("eip: 0x%x\n", eip);
-		printk("Size: %d\n",  ebp - esp);
+		printk("ebp: ox%x\n",  ebp);
+		printk("*ebp: ox%x\n",  *ebp);
+		printk("esp: ox%x\n",  esp);
 
 		dump_stack(ebp);
 		ebp = (uint32_t*)*ebp;

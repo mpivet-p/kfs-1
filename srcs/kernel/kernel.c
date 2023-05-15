@@ -10,9 +10,12 @@
 //#pragma GCC optimize ("O0")
 uint32_t	sleep(uint32_t seconds);
 void		shell(void);
+void		print_stack(void);
 
 void kernel_main(void)
 {
+	char	str[] = "Hello Worldb\n";
+	int		nbr = 0x42430102;
 	install_gdt();
 	install_idt();
 	install_irq();
@@ -21,6 +24,8 @@ void kernel_main(void)
 	init_term();
 
 	printk("Hello 42!\nby mpivet-p\n");
-	sleep(4);
+	print_stack();
+	printk("nbr: %p\n", &nbr);
+	printk("str: %p\n", &(str[0]));
 	shell();
 }
