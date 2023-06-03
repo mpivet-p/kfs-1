@@ -6,16 +6,20 @@
 #include "idt.h"
 #include "irq.h"
 #include "printk.h"
+#include "stack.h"
 
 //#pragma GCC optimize ("O0")
-uint32_t	sleep(uint32_t seconds);
+
 void		shell(void);
-void		print_stack(void);
 
 void kernel_main(void)
 {
-	char	str[] = "Hello Worldb\n";
-	int		nbr = 0x42430102;
+	char	str[] = "Hello World!\nby mpivet-p\n";
+	/*
+	** Uncomment this and the pragma above to test the stack dump
+	** int		nbr = 0x42430102;
+	*/
+
 	install_gdt();
 	install_idt();
 	install_irq();
@@ -23,9 +27,7 @@ void kernel_main(void)
 
 	init_term();
 
-	printk("Hello 42!\nby mpivet-p\n");
-	print_stack();
-	printk("nbr: %p\n", &nbr);
-	printk("str: %p\n", &(str[0]));
+	printk(str);
+	print_stack(0);
 	shell();
 }

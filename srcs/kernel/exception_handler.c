@@ -41,4 +41,5 @@ void	exception_handler(regs_t *re)
 		printk("\n%s Exception. System Halted", exception_msgs[re->int_no]);
 		__asm__ volatile ("cli; hlt");
 	}
+	while (1);
 }

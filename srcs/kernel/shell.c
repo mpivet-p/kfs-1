@@ -1,11 +1,11 @@
 #include "printk.h"
 #include "string.h"
+#include "stack.h"
 #include "readline.h"
 #include "io.h"
 
 #define TERM_BUFF	255
 
-int		readline(char *buf, size_t size);
 extern  volatile uint32_t	timer_ticks;
 
 static void reboot(void)
@@ -28,15 +28,6 @@ static void	shutdown(void)
 	outw(0x604, 0x2000);
 }
 
-static int	get_stack(void)
-{
-	register uint32_t esp asm("esp");
-	register uint32_t ebp asm("ebp");
-
-	//print_stack();
-	return ((int)(ebp - esp));
-}
-
 void	shell(void)
 {
 	char	buf[TERM_BUFF + 1];
@@ -55,7 +46,7 @@ void	shell(void)
 		else if (strcmp(buf, "reboot") == 0)
 			reboot();
 		else if (strcmp(buf, "stack") == 0)
-			printk("Stack size is %d bytes\n", get_stack());
+			print_stack(1);
 		else if (strlen(buf) > 0)
 			printk("kfsh: Command not found.\n");
 	}
