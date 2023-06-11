@@ -26,6 +26,8 @@ _start:
 
 		; This is where we should init the processor state etc.
 
+		push eax
+		push ebx
 		extern	kernel_main
 		call	kernel_main
 
