@@ -9,11 +9,13 @@
 #include "printk.h"
 #include "stack.h"
 
+#pragma GCC push_options
+#pragma GCC optimize ("O0")
+
 void		shell(void);
 
 void	get_memory_infos(multiboot_info_t *mbd, uint32_t magic)
 {
-	multiboot_memory_map_t	*mmap;
 	uint32_t				addr_min = 0xFFFFFFFF;
 	uint32_t				addr_max = 0x0;
 
@@ -21,20 +23,22 @@ void	get_memory_infos(multiboot_info_t *mbd, uint32_t magic)
 		printk("ERROR magic number mismatch\n");
 	if (!(mbd->flags >> 6 & 0x1))
 		printk("Invalid memory map!\n");
-	mmap = mbd->mmap_addr;
-	for (size_t i = 0; i < mbd->mmap_length; i++)
-	{
-		if (mmap[i].type == MULTIBOOT_MEMORY_AVAILABLE)
+    for (size_t i = 0; i < mbd->mmap_length; i += sizeof(multiboot_memory_map_t))
+    {
+        multiboot_memory_map_t *mmmt = (multiboot_memory_map_t*) (mbd->mmap_addr + i);
+
+        printk("Start Addr: %x | Length: %x | Size: %x | Type: %d\n",
+            mmmt->addr, mmmt->len, mmmt->size, mmmt->type);
+
+        if(mmmt->type == MULTIBOOT_MEMORY_AVAILABLE)
 		{
-			if (mmap[i].addr < addr_min)
-				addr_min = mmap[i].addr;
-			if ((mmap[i].addr + mmap[i].len) > addr_max)
-				addr_max = mmap[i].addr + mmap[i].len;
-			printk("%x %x %x\n", mmap[i].addr, mmap[i].len, mmap[i].size);
-			printk("=> %x %x\n", mmap[i].addr +  mmap[i].len, addr_max);
-			//printk("=> %d\n", mmap[i].addr +  mmap[i].len, addr_max);
-		}
-	}
+			puts("a");
+//			if (mmmt->addr < addr_min)
+//				addr_min = mmmt->addr;
+//			if (addr_max < mmmt->addr + mmmt->len)
+//				addr_max = mmmt->addr + mmmt->len;
+        }
+    }
 	printk("min address: 0x%x   max address: 0x%x\n", addr_min, addr_max);
 }
 
@@ -54,3 +58,4 @@ void	kernel_main(multiboot_info_t* mbd, uint32_t magic)
 	//print_stack(0);
 	shell();
 }
+#pragma GCC pop_options
