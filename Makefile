@@ -25,7 +25,7 @@ $(NAME): isodir/boot/kfs.bin
 	grub-mkrescue -o kfs.iso isodir
 
 isodir/boot/kfs.bin: $(OBJS)
-	i686-elf-gcc -T linker.ld -o ./isodir/boot/kfs.bin -ffreestanding -O2 -nostdlib $(OBJS) -lgcc
+	i686-elf-gcc -T linker.ld -o ./isodir/boot/kfs.bin -ffreestanding -fno-builtin -fno-exceptions -fno-stack-protector -nodefaultlibs -nostdlib $(OBJS) -lgcc
 
 $(BUILD_DIR)%.o: $(SRC_DIR)/$(BOOTL_DIR)%.s
 	mkdir build 2>/dev/null || true
@@ -33,7 +33,7 @@ $(BUILD_DIR)%.o: $(SRC_DIR)/$(BOOTL_DIR)%.s
 
 $(BUILD_DIR)%.o: $(SRC_DIR)/$(KERNEL_DIR)%.c
 	mkdir build 2>/dev/null || true
-	i686-elf-gcc -c $< -o $@ -std=gnu99 -ffreestanding -O2 -Wall -Wextra -I $(INCLUDE_DIR)
+	i686-elf-gcc -c $< -o $@ -std=gnu99 -ffreestanding -fno-builtin -fno-exceptions -fno-stack-protector -nostdlib -nodefaultlibs -Wall -Wextra -I $(INCLUDE_DIR)
 
 run: all
 	qemu-system-i386 -boot d -cdrom kfs.iso

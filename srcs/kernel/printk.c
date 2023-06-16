@@ -24,7 +24,10 @@ static	int	get_flag(char c)
 			ret = PRINTK_INT;
 			break ;
 		case 'x':
-			ret = PRINTK_HEX;
+			ret = PRINTK_HEX32;
+			break ;
+		case 'X':
+			ret = PRINTK_HEX64;
 			break ;
 		case 'b':
 			ret = PRINTK_BIN;
@@ -60,7 +63,13 @@ static void	get_int(va_list *ap, char *loc_buff)
 	itoa_buf(n, loc_buff);
 }
 
-static void	get_hex(va_list *ap, char *loc_buff)
+static void	get_hex32(va_list *ap, char *loc_buff)
+{
+	uint64_t	n = va_arg(*ap, uint32_t);
+	itoa_base_buf(n, 16, loc_buff);
+}
+
+static void	get_hex64(va_list *ap, char *loc_buff)
 {
 	uint64_t	n = va_arg(*ap, uint64_t);
 	itoa_base_buf(n, 16, loc_buff);
@@ -82,7 +91,7 @@ static void	flush_printk_buff(char *buff, size_t *j)
 static void	process_flag(va_list *ap, int flag, char *buff, size_t *j)
 {
 	static void (*fl[PRINTK_FLAGS_LEN])(va_list *ap, char *loc_buff) = {0x0, get_str,
-			get_ptr, get_char, get_int, get_hex, get_bin};
+			get_ptr, get_char, get_int, get_hex32, get_hex64, get_bin};
 	size_t	len;
 	char	loc_buff[128];
 
