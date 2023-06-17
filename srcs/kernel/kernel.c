@@ -6,6 +6,7 @@
 #include "irq.h"
 #include "printk.h"
 #include "memory.h"
+#include "multiboot.h"
 
 void		shell(void);
 

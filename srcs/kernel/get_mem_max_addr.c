@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stddef.h>
 #include "printk.h"
 #include "multiboot.h"
 #include "memory.h"
@@ -32,5 +33,5 @@ uint32_t	get_mem_max_addr(multiboot_info_t *mbd, uint32_t magic)
     }
 	if (KFS_DEBUG)
 		printk("min address: 0x%x   max address: 0x%x\n", addr_min, addr_max);
-	return (max_addr);
+	return (addr_max);
 }

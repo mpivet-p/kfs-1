@@ -1,3 +1,4 @@
-	build
-	isodir/boot/kfs.bin
-	kfs.iso
+build
+build/*
+isodir/boot/kfs.bin
+kfs.iso
