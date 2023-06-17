@@ -21,7 +21,7 @@ void	kernel_main(multiboot_info_t* mbd, uint32_t magic)
 
 	init_term();
 
-	get_memory_infos(mbd, magic);
+	init_physical_memory(mbd, magic);
 	printk(str);
 	shell();
 }
