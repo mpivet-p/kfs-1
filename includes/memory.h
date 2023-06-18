@@ -9,6 +9,9 @@
 
 uint32_t	get_mem_max_addr(multiboot_info_t *mbd, uint32_t magic);
 void		init_physical_memory(multiboot_info_t *mbd, uint32_t magic);
+void		*pmmngr_alloc_blocks(uint32_t n);
+void		*pmmngr_alloc_block(void);
+void		pmmngr_free_block(void *block_paddr);
 
 extern uint32_t	_pmmngr_map[KFS_PM_MMAP_SIZE];
 extern uint32_t	_pmmngr_size;
@@ -25,7 +28,7 @@ static inline void		mmap_unset(uint32_t bit)
 	_pmmngr_map[bit / 32] &= (1 << (bit & 31));
 }
 
-static inline uint8_t	mmap_test(uint32_t bit)
+static inline uint32_t	mmap_test(uint32_t bit)
 {
 	return (_pmmngr_map[bit / 32] & (1 << (bit & 31)));
 }
