@@ -9,6 +9,7 @@
 
 uint32_t	get_mem_max_addr(multiboot_info_t *mbd, uint32_t magic);
 void		init_physical_memory(multiboot_info_t *mbd, uint32_t magic);
+void		init_virtual_memory(void);
 void		*pmmngr_alloc_blocks(uint32_t n);
 void		*pmmngr_alloc_block(void);
 void		pmmngr_free_block(void *block_paddr);
@@ -45,6 +46,7 @@ static inline uint32_t	pmmngr_free_blocks_count(void)
 
 typedef	uint32_t	pt_entry;
 typedef	uint32_t	pd_entry;
+typedef	uint32_t	physical_addr;
 
 # define PAGES_PER_TABLE		1024
 # define PAGES_PER_DIR			1024
@@ -78,6 +80,21 @@ static inline void	pt_entry_add_attrib(pt_entry *e, uint32_t attribute)
 	*e |= attribute;
 }
 
+static inline void	pt_entry_del_attrib(pt_entry *e, uint32_t attribute)
+{
+	*e ^= attribute;
+}
+
+static inline void	pt_entry_set_frame(pt_entry *e, physical_addr p)
+{
+	*e |= (p & I86_PTE_FRAME);
+}
+
+static inline void	*pt_entry_pfn(pt_entry e)
+{
+	return (e & I86_PTE_FRAME);
+}
+
 enum PAGE_PDE_FLAGS {
  
 	I86_PDE_PRESENT			=	1,		//0000000000000000000000000000001
@@ -96,4 +113,9 @@ enum PAGE_PDE_FLAGS {
 static inline void	pd_entry_add_attrib(pd_entry *e, uint32_t attribute)
 {
 	*e |= attribute;
+}
+
+static inline void	pd_entry_del_attrib(pd_entry *e, uint32_t attribute)
+{
+	*e ^= attribute;
 }
