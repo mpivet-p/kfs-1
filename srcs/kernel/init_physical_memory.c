@@ -1,5 +1,7 @@
 #include <stddef.h>
 #include "memory.h"
+//TMP
+#include "printk.h"
 
 uint32_t	_pmmngr_map[KFS_PM_MMAP_SIZE];
 uint32_t	_pmmngr_size;
