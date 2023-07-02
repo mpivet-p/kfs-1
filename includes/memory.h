@@ -160,6 +160,11 @@ static inline void	pd_entry_set_frame(pd_entry *e, physical_addr addr)
 	*e = (*e & ~I86_PTE_FRAME) | addr;
 }
 
+static inline void	*pd_entry_pfn(pd_entry e)
+{
+	return ((void*)(e & I86_PDE_FRAME));
+}
+
 /* ============================================================================
 **                      HIGH LEVEL MEMORY FUNCTIONS
 ** ============================================================================

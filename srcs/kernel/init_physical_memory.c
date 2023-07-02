@@ -21,10 +21,11 @@ void	init_physical_memory(multiboot_info_t *mbd, uint32_t magic)
 		_pmmngr_map[i] = 0;
 	}
 
-	void *test = pmmngr_alloc_block();
-	printk("%p\n", test);
-	test = pmmngr_alloc_blocks(12);
-	printk("%p\n", test);
-	test = pmmngr_alloc_block();
-	printk("%p\n", test);
+	// Uncomment to test
+	//void *test = pmmngr_alloc_block();
+	//printk("%p\n", test);
+	//test = pmmngr_alloc_blocks(12);
+	//printk("%p\n", test);
+	//test = pmmngr_alloc_block();
+	//printk("%p\n", test);
 }

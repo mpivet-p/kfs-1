@@ -24,12 +24,12 @@ static virtual_addr	get_available_virtual_addr(void)
 	{
 		if ((p->m_entries[i] & I86_PDE_PRESENT) == I86_PDE_PRESENT)
 		{
-			ptable *table = p->m_entries[i] & I86_PDE_FRAME;
+			ptable *table = (uint32_t)(p->m_entries[i]) & I86_PDE_FRAME;
 			for (size_t j = 0; j < PAGES_PER_TABLE; j++)
 			{
 				if ((table->m_entries[j] & I86_PTE_PRESENT) != I86_PTE_PRESENT)
 				{
-					return ((virtual_addr)(i * PAGES_PER_TABLE + j * PAGE_SIZE));
+					return ((virtual_addr)(i * PAGES_PER_TABLE * PAGE_SIZE + j * PAGE_SIZE));
 				}
 			}
 		}
@@ -47,9 +47,9 @@ void	*vmalloc(uint32_t size)
 			return (NULL);
 
 		virtual_addr vaddr = get_available_virtual_addr();
+		//printk("virtual: %x | physical: %x\n", vaddr, paddr);
 		if (vaddr == 0)
 			return (NULL);
-		printk("%x %x\n", vaddr, paddr);
 		vmmngr_map_page((void*)paddr, (void*)vaddr);
 		return ((void*)vaddr);
 	}
