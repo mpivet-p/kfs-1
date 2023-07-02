@@ -44,8 +44,8 @@ void	init_virtual_memory(void)
 	////char *blob = 0x500000;
 	////blob[0] = 'a';
 	char *a = vmalloc(1);
-	printk("a = %p\n", a);
-	a[0] = 0;
+	//printk("a = %p\n", a);
+	//a[0] = 0;
 	void *b = vmalloc(4097);
 	void *c = vmalloc(4096);
 	printk("%p %p %p\n", a, b, c);
