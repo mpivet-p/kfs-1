@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include "string.h"
 #include "memory.h"
+#include "printk.h"
 #include "time.h"
 
 pdirectory page_directory __attribute__((aligned(4096)));
@@ -30,7 +31,8 @@ void	init_virtual_memory(void)
 		first_page_table.m_entries[i] = (i * 0x1000) | (I86_PTE_WRITABLE | I86_PTE_PRESENT);
 	}
 
-	ptable	*pages = (uint32_t)(page_directory.m_entries[1]) & I86_PDE_FRAME;
+	ptable	*pages =
+		(ptable*)((uint32_t)(page_directory.m_entries[1]) & I86_PDE_FRAME);
 	for (size_t i = 0; i < PAGES_PER_TABLE; i++)
 	{
 		pages->m_entries[i] = (uint32_t)((page_directory.m_entries[i]) & I86_PDE_FRAME) | (I86_PTE_WRITABLE | I86_PTE_PRESENT);
@@ -44,9 +46,8 @@ void	init_virtual_memory(void)
 	////char *blob = 0x500000;
 	////blob[0] = 'a';
 	char *a = vmalloc(1);
-	//printk("a = %p\n", a);
-	//a[0] = 0;
+	a[0] = 0;
 	void *b = vmalloc(4097);
-	void *c = vmalloc(4096);
-	printk("%p %p %p\n", a, b, c);
+	void *c = kmalloc(13000);
+	printk("%p [%d] | %p [%d] | %p [%d]\n", a, vsize(a), b, vsize(b), c, vsize(c));
 }

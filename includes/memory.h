@@ -142,8 +142,11 @@ enum PAGE_PDE_FLAGS {
    	I86_PDE_FRAME			= 0x7FFFF000	//1111111111111111111000000000000
 };
 
-pdirectory	*get_page_directory(void);
-void		vmmngr_map_page(void *phys, void *virt);
+virtual_addr	get_available_virtual_addr(size_t nbr);
+pdirectory		*get_page_directory(void);
+size_t			vmmngr_alloc_size(const void *addr);
+void			vmmngr_map_page(void *phys, void *virt);
+void			vmmngr_alloc_free(const void *addr);
 
 static inline void	pd_entry_add_attrib(pd_entry *e, uint32_t attribute)
 {
@@ -171,5 +174,10 @@ static inline void	*pd_entry_pfn(pd_entry e)
 */
 
 void	*vmalloc(uint32_t size);
+void	vfree(const void *addr);
+size_t	vsize(const void *addr);
+size_t	ksize(const void *addr);
+void	kfree(const void *addr);
+void	*kmalloc(uint32_t size);
 
 #endif
