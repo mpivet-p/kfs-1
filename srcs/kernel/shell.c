@@ -7,6 +7,7 @@
 #define TERM_BUFF	255
 
 extern  volatile uint32_t	timer_ticks;
+void	print_physical_memory(void);
 
 static void reboot(void)
 {
@@ -45,8 +46,10 @@ void	shell(void)
 			shutdown();
 		else if (strcmp(buf, "reboot") == 0)
 			reboot();
-		else if (strcmp(buf, "stack") == 0)
+		else if (strcmp(buf, "stacktrace") == 0)
 			print_stack(1);
+		else if (strcmp(buf, "map") == 0)
+			print_physical_memory();
 		else if (strlen(buf) > 0)
 			printk("kfsh: Command not found.\n");
 	}

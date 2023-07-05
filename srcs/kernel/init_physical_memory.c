@@ -1,7 +1,5 @@
 #include <stddef.h>
 #include "memory.h"
-//TMP
-#include "printk.h"
 
 uint32_t	_pmmngr_map[KFS_PM_MMAP_SIZE];
 uint32_t	_pmmngr_size;
@@ -20,12 +18,4 @@ void	init_physical_memory(multiboot_info_t *mbd, uint32_t magic)
 	{
 		_pmmngr_map[i] = 0;
 	}
-
-	// Uncomment to test
-	//void *test = pmmngr_alloc_block();
-	//printk("%p\n", test);
-	//test = pmmngr_alloc_blocks(12);
-	//printk("%p\n", test);
-	//test = pmmngr_alloc_block();
-	//printk("%p\n", test);
 }
