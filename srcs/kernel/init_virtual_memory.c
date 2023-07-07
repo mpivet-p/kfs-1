@@ -42,12 +42,9 @@ void	init_virtual_memory(void)
 	load_page_dir(&page_directory);
 	enable_paging();
 
-	//// Uncomment to trigger page fault exception
-	////char *blob = 0x500000;
-	////blob[0] = 'a';
-	char *a = vmalloc(1);
-	a[0] = 0;
-	void *b = vmalloc(4097);
-	void *c = kmalloc(13000);
-	printk("%p [%d] | %p [%d] | %p [%d]\n", a, vsize(a), b, vsize(b), c, vsize(c));
+	///char *a = vmalloc(1);
+	///a[0] = 0;
+	///void *b = vmalloc(4097);
+	///void *c = kmalloc(13000);
+	///printk("%p [%d] | %p [%d] | %p [%d]\n", a, vsize(a), b, vsize(b), c, vsize(c));
 }

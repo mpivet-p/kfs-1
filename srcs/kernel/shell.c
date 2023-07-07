@@ -8,6 +8,10 @@
 
 extern  volatile uint32_t	timer_ticks;
 void	print_physical_memory(void);
+void	demo_vmalloc(void);
+void	demo_kmalloc(void);
+void	demo_page_panic(void);
+void	demo_div_panic(void);
 
 static void reboot(void)
 {
@@ -33,7 +37,8 @@ void	shell(void)
 {
 	char	buf[TERM_BUFF + 1];
 
-	printk("Welcome to kfsh!\nAvailable commands are `stack`, `time`, `shutdown` and `reboot`\n");
+	printk("Welcome to kfsh!\nAvailable commands are:\n  - stacktrace\n"\
+			"  - time\n  - shutdown\n  - reboot\n  - map\n  - kmalloc\n  - vmalloc\n  - page_panic\n  - div_panic\n");
 	while (1)
 	{
 		bzero(buf, TERM_BUFF + 1);
@@ -50,6 +55,14 @@ void	shell(void)
 			print_stack(1);
 		else if (strcmp(buf, "map") == 0)
 			print_physical_memory();
+		else if (strcmp(buf, "kmalloc") == 0)
+			demo_kmalloc();
+		else if (strcmp(buf, "vmalloc") == 0)
+			demo_vmalloc();
+		else if (strcmp(buf, "page_panic") == 0)
+			demo_page_panic();
+		else if (strcmp(buf, "div_panic") == 0)
+			demo_div_panic();
 		else if (strlen(buf) > 0)
 			printk("kfsh: Command not found.\n");
 	}
