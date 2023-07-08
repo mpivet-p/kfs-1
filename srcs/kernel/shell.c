@@ -12,6 +12,7 @@ void	demo_vmalloc(void);
 void	demo_kmalloc(void);
 void	demo_page_panic(void);
 void	demo_div_panic(void);
+void	demo_paging(void);
 
 static void reboot(void)
 {
@@ -38,7 +39,8 @@ void	shell(void)
 	char	buf[TERM_BUFF + 1];
 
 	printk("Welcome to kfsh!\nAvailable commands are:\n  - stacktrace\n"\
-			"  - time\n  - shutdown\n  - reboot\n  - map\n  - kmalloc\n  - vmalloc\n  - page_panic\n  - div_panic\n");
+			"  - time\n  - shutdown\n  - reboot\n  - map\n  - kmalloc\n"\
+			"  - vmalloc\n  - page_panic\n  - div_panic\n  - paging\n");
 	while (1)
 	{
 		bzero(buf, TERM_BUFF + 1);
@@ -59,6 +61,8 @@ void	shell(void)
 			demo_kmalloc();
 		else if (strcmp(buf, "vmalloc") == 0)
 			demo_vmalloc();
+		else if (strcmp(buf, "paging") == 0)
+			demo_paging();
 		else if (strcmp(buf, "page_panic") == 0)
 			demo_page_panic();
 		else if (strcmp(buf, "div_panic") == 0)

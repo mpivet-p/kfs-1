@@ -9,7 +9,7 @@ static int32_t	mmap_get_first_free(void)
 	{
 		if (_pmmngr_map[i] != 0xFFFFFFFF)
 		{
-			for (size_t block = i * 32; block < (i + 1) * 32; block++)
+			for (size_t block = i * 32; block < ((i + 1) * 32); block++)
 			{
 				if (!mmap_test(block))
 					return (block);

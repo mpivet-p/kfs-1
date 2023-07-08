@@ -114,6 +114,24 @@ void	vmmngr_alloc_free(const void *addr)
 		ptable *t = (ptable*)((uint32_t)p->m_entries[PAGE_DIR_INDEX(vaddr)] & I86_PDE_FRAME);
 		pt_entry *pd = &(t->m_entries[PAGE_TABLE_INDEX(vaddr)]);
 		vmmngr_free_page(pd);
+		__native_flush_tlb_single(vaddr);
 		vaddr += 0x1000;
 	}
+}
+
+void	vmmngr_dump_alloc(const void *addr)
+{
+	virtual_addr	vaddr = (virtual_addr)addr - 16;
+	pdirectory		*p = get_page_directory();
+	size_t			pages_to_read = *(int*)vaddr;
+
+	for (size_t i = 0; i < pages_to_read; i++)
+	{
+		ptable *t = (ptable*)((uint32_t)p->m_entries[PAGE_DIR_INDEX(vaddr)] & I86_PDE_FRAME);
+		pt_entry *pd = &(t->m_entries[PAGE_TABLE_INDEX(vaddr)]);
+		void *p = pt_entry_pfn(*pd);
+		printk("Virtual address 0x%x | Physical address %p\n", vaddr, p);
+		vaddr += 0x1000;
+	}
+
 }

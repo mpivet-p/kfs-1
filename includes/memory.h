@@ -29,7 +29,7 @@ static inline void		mmap_set(uint32_t bit)
 
 static inline void		mmap_unset(uint32_t bit)
 {
-	_pmmngr_map[bit / 32] &= (1 << (bit & 31));
+	_pmmngr_map[bit / 32] &= ~ (1 << (bit % 32));
 }
 
 static inline uint32_t	mmap_test(uint32_t bit)
@@ -147,6 +147,7 @@ pdirectory		*get_page_directory(void);
 size_t			vmmngr_alloc_size(const void *addr);
 void			vmmngr_map_page(void *phys, void *virt);
 void			vmmngr_alloc_free(const void *addr);
+void			vmmngr_dump_alloc(const void *addr);
 
 static inline void	pd_entry_add_attrib(pd_entry *e, uint32_t attribute)
 {
@@ -166,6 +167,10 @@ static inline void	pd_entry_set_frame(pd_entry *e, physical_addr addr)
 static inline void	*pd_entry_pfn(pd_entry e)
 {
 	return ((void*)(e & I86_PDE_FRAME));
+}
+
+static inline void __native_flush_tlb_single(virtual_addr addr) {
+	asm volatile("invlpg (%0)" ::"r" (addr) : "memory");
 }
 
 /* ============================================================================
